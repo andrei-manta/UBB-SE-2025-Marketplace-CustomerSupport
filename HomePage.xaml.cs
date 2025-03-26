@@ -12,14 +12,20 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+
+
 namespace RecoverAccount
 {
-    public sealed partial class MainWindow : Window
+    public sealed partial class HomePage : Page
     {
-        public MainWindow()
+        public HomePage()
         {
             this.InitializeComponent();
-            MainFrame.Navigate(typeof(HomePage));
+        }
+
+        private void myButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(EnterIdPage));
         }
     }
 }
