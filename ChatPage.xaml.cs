@@ -19,6 +19,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Microsoft.UI.Xaml.Media.Imaging;
+using ClientChat.Data;
+using ClientChat.Objects;
+using ClientChat.Utilities;
 
 
 
@@ -32,16 +35,192 @@ namespace Marketplace_SE
     /// </summary>
     public sealed partial class ChatPage : Page
     {
+
         private bool isConnected = false;
-        private const int sendPort = 13000;
-        private const int listenPort = 13001;
+        private int sendPort = 13000;
+        private int listenPort = 13001;
         private List<string> chatHistory = new();
+
+
+        private Conversation conversation;
+        private User me;
+        private User target;
 
         public ChatPage()
         {
+            // Open database connection
+            // Read Database.cs for guide
+            Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-U503EH8\SQLEXPRESS;user id=sa;password=12345678");
+            bool status = Database.database.Connect();
+            Console.WriteLine(status);
+            if (!status)
+            {
+                //database connection failed
+                Notification notification = new Notification("Database connection error", "Error connecting to database");
+                notification.OkButton.Click += (s, e) =>
+                {
+                    notification.GetWindow().Close();
+                    Database.database.Close();
+                    Frame.Navigate(typeof(MainMarketplacePage));
+                };
+                notification.GetWindow().Activate();
+                return;
+            }
+
+            //hardcoded users
+
+            this.me = new User("test1","");
+            this.me.SetId(0);
+
+            this.target = new User("test2","");
+            this.target.SetId(1);
+
             this.InitializeComponent();
+            
+
+            if (me.username == "test1")
+            {
+                sendPort = 13000;
+                listenPort = 13001;
+            }
+            else if (me.username == "test2")
+            {
+                sendPort = 13001;
+                listenPort = 13000;
+            }
+
+
+            //Database actions
+            var data = Database.database.Get("SELECT * FROM dbo.Conversations WHERE ((user1=@MyID AND user2=@TargetID) OR (user2=@MyID AND user1=@TargetID))",
+            new string[]
+            {
+                "@MyID",
+                "@TargetID"
+            }, new object[]
+            {
+                me.id,
+                target.id
+            });
+
+            List<Conversation> conversationList = Database.database.ConvertToObject<Conversation>(data);
+
+            if (conversationList.Count == 0)
+            {
+                //Create conversation
+
+                int affected = Database.database.Execute("INSERT INTO Conversations (user1, user2) VALUES (@MyID, @TargetID)",
+                    new string[]
+                    {
+                        "@MyID",
+                        "@TargetID"
+                    }, new object[]
+                    {
+                        me.id,
+                        target.id
+                    }
+                );
+
+                //Get again
+                data = Database.database.Get("SELECT * FROM Conversations WHERE ((user1=@MyID AND user2=@TargetID) OR (user2=@MyID AND user1=@TargetID))",
+                new string[]
+                {
+                    "@MyID",
+                    "@TargetID"
+                }, new object[]
+                {
+                    me.id,
+                    target.id
+                });
+                conversationList = Database.database.ConvertToObject<Conversation>(data);
+            }
+
+            conversation = conversationList[0];
+
+            // Load chat history from conv 0
+            data = Database.database.Get("SELECT * FROM dbo.Messages WHERE conversationId=@ConvID",
+            new string[]
+            {
+                "@ConvID",
+            }, new object[]
+            {
+                conversation.id
+            });
+
+            List<Message> messages = Database.database.ConvertToObject<Message>(data);
+            //Sort messages timestamp
+            messages.Sort((a, b) =>
+            {
+                return b.timestamp - a.timestamp;
+            });
+
+            for (int i = 0; i < messages.Count; i++)
+            {
+                if (messages[i].contentType == "text")
+                {
+                    AddMessageToChat(messages[i].content, me.id == messages[i].creator);
+                }
+                else if (messages[i].contentType == "image")
+                {
+                    byte[] imgBytes = DataEncoder.HexDecode(messages[i].content);
+                    DisplayImageFromBytes(imgBytes, me.id == messages[i].creator);
+                }
+                else
+                {
+                    //must not happen
+                }
+            }
+
         }
 
+
+        private void SendMsgDatabase(object _content, string contentType = "")
+        {
+            //Allowed content type
+            // text
+            // image
+
+
+            DateTime currentTime = DateTime.UtcNow;
+            long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeMilliseconds();
+
+
+            string content = "";
+            if (_content.GetType() == typeof(string))
+            {
+                if (contentType == "")
+                    contentType = "text";
+                content = _content as string;
+            }
+            else
+            {
+                if (_content.GetType() != typeof(byte[]))
+                {
+                    //only byte[] accepted
+                    return;
+                }
+                content = DataEncoder.HexEncode((byte[])_content);
+                if (contentType == "")
+                    contentType = "bytes";
+            }
+
+            int affected = Database.database.Execute("INSERT INTO Messages (conversationId, creator,timestamp,contentType,content) VALUES (@ConvID, @MyID,@Timestamp,@ContentType,@Content)",
+                    new string[]
+                    {
+                        "@ConvID",
+                        "@MyID",
+                        "@Timestamp",
+                        "@ContentType",
+                        "@Content"
+                    }, new object[]
+                    {
+                        conversation.id,
+                        me.id,
+                        unixTime,
+                        contentType,
+                        content
+                    }
+                );
+        }
 
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
@@ -58,6 +237,7 @@ namespace Marketplace_SE
             string message = MessageBox.Text.Trim();
             if (string.IsNullOrEmpty(message)) return;
 
+            SendMsgDatabase(message);
             SendMessage(message);
             AddMessageToChat(message, true);
             MessageBox.Text = "";
@@ -65,6 +245,7 @@ namespace Marketplace_SE
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            Database.database.Close();
             Frame.Navigate(typeof(MainMarketplacePage));
         }
 
@@ -219,6 +400,8 @@ namespace Marketplace_SE
             {
                 var buffer = await Windows.Storage.FileIO.ReadBufferAsync(file);
                 byte[] bytes = buffer.ToArray();
+
+                SendMsgDatabase(bytes, "image");
 
                 // Tag the image so receiver knows what it is
                 byte[] header = Encoding.UTF8.GetBytes("IMG|");
