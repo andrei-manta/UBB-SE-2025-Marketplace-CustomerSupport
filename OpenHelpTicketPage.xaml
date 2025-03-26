@@ -39,6 +39,16 @@
                    VerticalAlignment="Center"
                    Visibility="Collapsed" 
                    x:Name="TextBlockOpenTicketUserNotFound"/>
+        <TextBlock Text="Ticket added succesfuly to database!"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Visibility="Collapsed" 
+                   x:Name="TextBlockOpenTicketTicketAddedSuccessfully"/>
+        <TextBlock Text="Failde to add ticket to database! Retry"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Visibility="Collapsed" 
+                   x:Name="TextBlockOpenTicketTicketAddFailed"/>
         <Button Content="Open ticket" 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 

@@ -31,16 +31,43 @@ namespace Marketplace_SE
         {
             TextBlockOpenTicketEmptyFields.Visibility = Visibility.Collapsed;
             TextBlockOpenTicketUserNotFound.Visibility = Visibility.Collapsed;
+            TextBlockOpenTicketTicketAddedSuccessfully.Visibility = Visibility.Collapsed;
+            TextBlockOpenTicketTicketAddFailed.Visibility = Visibility.Collapsed;
+
+            bool isDataCorrect = true;
+
             if (TextBoxOpenTicketUserID.Text == "" || TextBoxOpenTicketUserName.Text == "" || TextBoxOpenTicketDescription.Text == "")
             {
                 TextBlockOpenTicketEmptyFields.Visibility = Visibility.Visible;
+                isDataCorrect = false;
             }
-            if(TextBoxOpenTicketUserID.Text != "1000")
+            if(!BackendUserGetHelp.DoesUserIDExist(TextBoxOpenTicketUserID.Text))
             {
                 TextBlockOpenTicketUserNotFound.Visibility = Visibility.Visible;
+                isDataCorrect = false;
             }
 
-            //UPLOAD TICKET TO DB
+            if(isDataCorrect)
+            {
+                int returnCode = BackendUserGetHelp.PushNewHelpTicketToDB(TextBoxOpenTicketUserID.Text, TextBoxOpenTicketUserName.Text, TextBoxOpenTicketDescription.Text);
+                switch(returnCode)
+                {
+                    case (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.PushNewHelpTicketToDBSuccess:
+                        {
+                            TextBlockOpenTicketTicketAddedSuccessfully.Visibility = Visibility.Visible;
+                            break;
+                        }
+                    case (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.PushNewHelpTicketToDBFailure:
+                        {
+                            TextBlockOpenTicketTicketAddFailed.Visibility = Visibility.Visible;
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+            }
         }
         private void OnButtonClickAdminNavigateOpenHelpTicketPageAdminAccountPage(object sender, RoutedEventArgs e)
         {
