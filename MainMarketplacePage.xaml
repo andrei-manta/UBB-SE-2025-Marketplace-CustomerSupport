@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Marketplace_SE.MainMarketplacePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Marketplace_SE"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Background="DarkSlateGray">
+            <StackPanel>
+                <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                    <TextBlock Text="Items:" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" 
+                      VerticalScrollBarVisibility="Visible" 
+                      Width="500" 
+                      Height="500">
+                        <StackPanel>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Book - Title - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller"/>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Car - Brand - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem2"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller2"/>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Book - Title - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem3"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller3"/>
+
+                                </StackPanel>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Car - Brand - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem4"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller4"/>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Car - Brand - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem5"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller5"/>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Book - Title - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem6"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller6"/>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Book - Title - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem7"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller7"/>
+                                </StackPanel>
+                            </Border>
+                            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Car - Brand - Cost" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <Button Content="Buy item" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickBuyItem"
+                                        x:Name="ButtonBuyItem8"/>
+                                    <Button Content="Chat with seller" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Width="150" 
+                                        Height="50" 
+                                        Click="OnButtonClickChatWithSeller"
+                                        x:Name="ButtonChatWithSeller8"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                    </Border>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="1" Background="Black">
+            <StackPanel>
+                <Border BorderBrush="DarkGray" BorderThickness="2" CornerRadius="10" Padding="10">
+                    <Button Content="Open account" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Width="150" 
+                        Height="50" 
+                        Click="OnButtonClickOpenAccount"
+                        x:Name="ButtonOpenAccount"/>
+                </Border>
+                <Border BorderBrush="DarkGray" BorderThickness="2" CornerRadius="10" Padding="10">
+                    <Button Content="Open help" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Width="150" 
+                        Height="50" 
+                        Click="OnButtonClickOpenHelp"
+                        x:Name="ButtonOpenHelp"/>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
