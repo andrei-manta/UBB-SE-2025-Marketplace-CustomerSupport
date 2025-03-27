@@ -35,7 +35,7 @@ namespace Marketplace_SE
         }
         private void OnButtonClickReturnItem(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ReturnItemPage));
+
         }
 
         private void OnButtonClickNavigateAccountPageMainPage(object sender, RoutedEventArgs e)

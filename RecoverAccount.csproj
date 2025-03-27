@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <RootNamespace>Marketplace_SE</RootNamespace>
+    <RootNamespace>RecoverAccount</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
@@ -13,19 +13,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="AccountPage.xaml" />
-    <None Remove="AdminAccountPage.xaml" />
-    <None Remove="AdminFindCallPage.xaml" />
-    <None Remove="AdminFindHelpTicket.xaml" />
-    <None Remove="ChatPage.xaml" />
-    <None Remove="FinalizeOrderPage.xaml" />
-    <None Remove="GetHelpPage.xaml" />
-    <None Remove="LoginPage.xaml" />
-    <None Remove="MainMarketplacePage.xaml" />
-    <None Remove="OpenHelpTicketPage.xaml" />
-    <None Remove="PlacedOrderPage.xaml" />
-    <None Remove="RegisterPage.xaml" />
-    <None Remove="ViewHelpTicket.xaml" />
+    <None Remove="EnterIdPage.xaml" />
+    <None Remove="HomePage.xaml" />
+    <None Remove="ResetPasswordPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,67 +45,17 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ChatPage.xaml">
+    <Page Update="ResetPasswordPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="ViewHelpTicket.xaml">
+    <Page Update="EnterIdPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="AdminFindHelpTicket.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="AdminFindCallPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="OpenHelpTicketPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="AdminAccountPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="GetHelpPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="FinalizeOrderPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="PlacedOrderPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="AccountPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="MainMarketplacePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="RegisterPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="LoginPage.xaml">
+    <Page Update="HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

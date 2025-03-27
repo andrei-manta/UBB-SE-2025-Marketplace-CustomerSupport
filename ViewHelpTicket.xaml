@@ -11,24 +11,24 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock Text="Ticket number: 1234" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBlock Text="User ID:" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBox Text="1000" 
+            <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockViewHelpTicketNumber"/>
+            <TextBlock Text="User ID:" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockViewHelpTicketUserID"/>
+            <TextBox Text="" 
              HorizontalAlignment="Center" 
              VerticalAlignment="Center" 
              Width="250"
              IsReadOnly="True"
              x:Name="TextBoxViewHelpTicketUserID"/>
-            <TextBlock Text="User name:" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBox Text="User Name" 
+            <TextBlock Text="User name:" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockViewHelpTicketUserName"/>
+            <TextBox Text="" 
              HorizontalAlignment="Center" 
              VerticalAlignment="Center" 
              Width="250"
              IsReadOnly="True"
              x:Name="TextBoxViewHelpTicketUserName"/>
-            <TextBlock Text="Creation date and time: 16-12-2024 12:24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockViewHelpTicketDateAndTime"/>
             <TextBlock Text="Description:" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <TextBox Text="Lorem ipsum" 
+            <TextBox Text="" 
              HorizontalAlignment="Center" 
              VerticalAlignment="Center" 
              Width="250"
