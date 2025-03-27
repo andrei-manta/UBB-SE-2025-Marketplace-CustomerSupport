@@ -51,15 +51,22 @@ namespace Marketplace_SE
 
             return returnList;
         }
+
+        public static bool DoesTicketIDExist()
+        {
+            //look for it in DB
+
+            return true;
+        }
     }
 
     public class HelpTicket
     {
-        private string TicketID { get; }
-        private string UserID { get; }
-        private string UserName { get; }
-        private string DateHour { get; }
-        private string Description { get; }
+        public string TicketID { get; }
+        public string UserID { get; }
+        public string UserName { get; }
+        public string DateHour { get; }
+        public string Description { get; }
         public HelpTicket(string TicketID_, string UserID_, string UserName_, string DateHour_, string Description_)
         {
             TicketID = TicketID_;
@@ -71,7 +78,7 @@ namespace Marketplace_SE
 
         public string toStringExceptDescription()
         {
-            return "Ticket nr: " + TicketID.ToString() + "; User ID: " + UserID.ToString() + "; User name: " + UserName.ToString() + "; Date and time: " + DateHour.ToString();
+            return TicketID.ToString() + "::" + UserID.ToString() + "::" + UserName.ToString() + "::" + DateHour.ToString();
         }
     }
 }
