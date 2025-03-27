@@ -38,6 +38,11 @@
             <TextBlock Text="Wrong date!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketWrongDate" Visibility="Collapsed"/>
             <TextBlock Text="Choose a checkbox!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketChooseCheckbox" Visibility="Collapsed"/>
             <TextBlock Text="Chosen date can't be in the future!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketChosenDayCantBeInFuture" Visibility="Collapsed"/>
+            <ScrollViewer>
+                <StackPanel x:Name="StackPanelAdminFindHelpTickets">
+
+                </StackPanel>
+            </ScrollViewer>
             <Button Content="Search" 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 

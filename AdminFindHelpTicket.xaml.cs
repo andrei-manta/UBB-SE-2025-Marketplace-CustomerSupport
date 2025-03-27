@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -63,7 +64,7 @@ namespace Marketplace_SE
 
             bool errorInInput = false;
 
-            if (TextBoxLookupHelpTicketUserID.Text != "1000")
+            if (!BackendUserGetHelp.DoesUserIDExist(TextBoxLookupHelpTicketUserID.Text))
             {
                 TextBlockAdminFindHelpTicketUserIDNotFound.Visibility = Visibility.Visible;
                 errorInInput = true;
@@ -80,12 +81,17 @@ namespace Marketplace_SE
                                                       System.Globalization.CultureInfo.InvariantCulture,
                                                       System.Globalization.DateTimeStyles.None,
                                                       out parsedDate);
-            DateTime today = DateTime.Today;
-            int compare = DateTime.Compare(today, parsedDate);
-            if(compare < 0)
+
+            int compare;
+            if (isDateValid)
             {
-                TextBlockAdminFindHelpTicketChosenDayCantBeInFuture.Visibility = Visibility.Visible;
-                errorInInput = true;
+                DateTime today = DateTime.Today;
+                compare = DateTime.Compare(today, parsedDate);
+                if (compare < 0)
+                {
+                    TextBlockAdminFindHelpTicketChosenDayCantBeInFuture.Visibility = Visibility.Visible;
+                    errorInInput = true;
+                }
             }
 
             if (!isDateValid)
@@ -96,15 +102,107 @@ namespace Marketplace_SE
 
             if(!errorInInput)
             {
-                //call backend
+                List<string> helpTicketIDs = BackendUserGetHelp.GetTicketIDsMatchingCriteria(TextBoxLookupHelpTicketUserID.Text, TextBoxLookupHelpTicketCreationDate.Text, CheckBoxAdminFindTicketSearchExactDate.IsChecked ?? false, CheckBoxAdminFindTicketSearchStartingDate.IsChecked ?? false, CheckBoxAdminFindTicketSearchEndingDate.IsChecked ?? false);
 
-                //TEMPORARY
-                Frame.Navigate(typeof(ViewHelpTicket));
+                List<HelpTicket> helpTickets = BackendUserGetHelp.LoadTicketsFromDB(helpTicketIDs);
+
+                StackPanelAdminFindHelpTickets.Children.Clear();
+
+                Border border = new Border
+                {
+                    BorderThickness = new Thickness(2),
+                    CornerRadius = new CornerRadius(5),
+                    BorderBrush = new SolidColorBrush(ColorHelper.FromArgb(255, 130, 130, 130)),
+                    Padding = new Thickness(10),
+                    Margin = new Thickness(5),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+
+                StackPanel innerStackPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal
+                };
+
+                TextBlock textBlock = new TextBlock
+                {
+                    Text = "TICKET ID - USER ID - USER'S NAME - DATE AND TIME",
+                    Margin = new Thickness(0, 0, 0, 10),
+                    FontSize = 16,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+
+                innerStackPanel.Children.Add(textBlock);
+                border.Child = innerStackPanel;
+
+                StackPanelAdminFindHelpTickets.Children.Add(border);
+
+                foreach (HelpTicket each in helpTickets)
+                {
+                    //construct an item for the scrollable list
+                    Border border_ = new Border
+                    {
+                        BorderThickness = new Thickness(2),
+                        CornerRadius = new CornerRadius(5),
+                        BorderBrush = new SolidColorBrush(ColorHelper.FromArgb(255, 130, 130, 130)),
+                        Padding = new Thickness(10),
+                        Margin = new Thickness(5),
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+
+                    StackPanel innerStackPanel_ = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal
+                    };
+
+                    TextBlock textBlock_ = new TextBlock
+                    {
+                        Text = each.toStringExceptDescription(),
+                        Margin = new Thickness(0, 0, 0, 10),
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Left
+                    };
+
+                    Button button_ = new Button
+                    {
+                        Content = "View ticket",
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Right
+                    };
+
+                    button_.Click += OnButtonClickNavigateAdminSearchHelpTicketPageViewTicketPage;
+
+                    innerStackPanel_.Children.Add(textBlock_);
+                    innerStackPanel_.Children.Add(button_);
+
+                    border_.Child = innerStackPanel_;
+
+                    StackPanelAdminFindHelpTickets.Children.Add(border_);
+                }
             }
         }
         private void OnButtonClickNavigateAdminSearchHelpTicketPageAdminAccountPage(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(AdminAccountPage));
+        }
+
+        private void OnButtonClickNavigateAdminSearchHelpTicketPageViewTicketPage(object sender, RoutedEventArgs e)
+        {
+            Button buttonClicked = sender as Button;
+            foreach(var each in (buttonClicked.Parent as StackPanel).Children)
+            {
+                if(each.GetType() == typeof(TextBlock))
+                {
+                    string text = (each as TextBlock).Text;
+                    string[] tokenizedText = text.Split("::");
+
+                    //pass the string TicketID to the new Page to look for it
+                    Frame.Navigate(typeof(ViewHelpTicket), tokenizedText[0]);
+                }
+            }
         }
     }
 }
