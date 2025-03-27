@@ -38,7 +38,6 @@ namespace Marketplace_SE
         private void OnButtonClickChatWithSeller(object sender, RoutedEventArgs e)
         {
             //IONUT AND CALIN HERE
-            Frame.Navigate(typeof(ChatPage));
         }
 
         private void OnButtonClickOpenHelp(object sender, RoutedEventArgs e)

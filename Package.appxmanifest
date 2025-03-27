@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="17ff18c7-053b-4db7-9c5a-55643958d13d"
-    Publisher="CN=rauli"
+    Name="b7742545-e717-41b7-b141-380bb97f7b0f"
+    Publisher="CN=ANDREI"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="17ff18c7-053b-4db7-9c5a-55643958d13d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="b7742545-e717-41b7-b141-380bb97f7b0f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>RecoverAccount</DisplayName>
-    <PublisherDisplayName>rauli</PublisherDisplayName>
+    <DisplayName>Marketplace_SE</DisplayName>
+    <PublisherDisplayName>ANDREI</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -34,8 +34,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="RecoverAccount"
-        Description="RecoverAccount"
+        DisplayName="Marketplace_SE"
+        Description="Marketplace_SE"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
