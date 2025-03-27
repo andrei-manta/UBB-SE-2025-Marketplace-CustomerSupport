@@ -29,7 +29,7 @@ namespace Marketplace_SE
         }
         private void OnButtonClickOpenChatbotConversation(object sender, RoutedEventArgs e)
         {
-            //MARK HERE
+            Frame.Navigate(typeof(ChatBotPage));
         }
         private void OnButtonClickOpenCSConversation(object sender, RoutedEventArgs e)
         {
