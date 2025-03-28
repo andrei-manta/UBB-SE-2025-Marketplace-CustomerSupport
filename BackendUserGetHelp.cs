@@ -18,7 +18,9 @@ namespace Marketplace_SE
             PushNewHelpTicketToDBSuccess,
             PushNewHelpTicketToDBFailure,
             UpdateHelpTicketInDBSuccess,
-            UpdateHelpTicketInDBFailure
+            UpdateHelpTicketInDBFailure,
+            ClosedHelpTicketInDBSuccess,
+            ClosedHelpTicketInDBFailure
         }
         public static int PushNewHelpTicketToDB(string UserID, string UserName, string Description, string Closed)
         {
@@ -238,6 +240,43 @@ namespace Marketplace_SE
             Database.database.Close();
 
             return (int)BackendUserGetHelpStatusCodes.UpdateHelpTicketInDBSuccess;
+        }
+
+        public static int CloseHelpTicketInDB(string TicketID)
+        {
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
+            bool status = Database.database.Connect();
+
+            if (!status)
+            {
+                //database connection failed
+                //ShowDialog("Database connection error", "Error connecting to database");
+
+                Notification notification = new Notification("Database connection error", "Error connecting to database");
+                notification.OkButton.Click += (s, e) =>
+                {
+                    notification.GetWindow().Close();
+                    Database.database.Close();
+                };
+                notification.GetWindow().Activate();
+                return (int)BackendUserGetHelpStatusCodes.ClosedHelpTicketInDBFailure;
+            }
+
+            Database.database.Execute("UPDATE dbo.UserGetHelpTickets SET Closed=@C WHERE TicketID=@TID",
+                    new string[]
+                    {
+                        "@TID",
+                        "@C"
+                    }, new object[]
+                    {
+                        int.Parse(TicketID),
+                        "Yes"
+                    }
+                );
+
+            Database.database.Close();
+
+            return (int)BackendUserGetHelpStatusCodes.ClosedHelpTicketInDBSuccess;
         }
     }
 

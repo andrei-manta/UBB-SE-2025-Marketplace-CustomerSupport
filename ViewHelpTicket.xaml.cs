@@ -32,8 +32,8 @@ namespace Marketplace_SE
 
             TextBlockViewHelpTicketDescriptionModificationFailed.Visibility = Visibility.Collapsed;
             TextBlockViewHelpTicketDescriptionModificationSucceeded.Visibility = Visibility.Collapsed;
-
-
+            TextBlockViewHelpTicketTicketClosureFailed.Visibility = Visibility.Collapsed;
+            TextBlockViewHelpTicketTicketClosureSucceeded.Visibility = Visibility.Collapsed;
         }
         private void OnButtonClickNavigateViewHelpTicketPageAdminAccountPage(object sender, RoutedEventArgs e)
         {
@@ -57,6 +57,25 @@ namespace Marketplace_SE
         {
             ButtonViewHelpTicketSaveDescriptionModifications.Visibility = Visibility.Visible;
         }
+        private void OnButtonClickViewHelpTicketCloseTicket(object sender, RoutedEventArgs e)
+        {
+            int successCode = BackendUserGetHelp.CloseHelpTicketInDB(loadedTicket.TicketID);
+
+            if(successCode == (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.ClosedHelpTicketInDBFailure)
+            {
+                TextBlockViewHelpTicketTicketClosureFailed.Visibility = Visibility.Visible;
+            }
+            if (successCode == (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.ClosedHelpTicketInDBSuccess)
+            {
+                TextBlockViewHelpTicketTicketClosureSucceeded.Visibility = Visibility.Visible;
+                TextBoxViewHelpTicketDescription.IsReadOnly = true;
+                ButtonViewHelpTicketSaveDescriptionModifications.Visibility = Visibility.Collapsed;
+                ButtonViewHelpTicketCloseTicket.Visibility = Visibility.Collapsed;
+                ButtonViewHelpTicketSaveDescriptionModifications.Visibility = Visibility.Collapsed;
+                TextBoxViewHelpTicketDescription.Text = loadedTicket.Descript;
+                TextBlockViewHelpTicketClosed.Text = "Closed: " + loadedTicket.Closed;
+            }
+        }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -72,6 +91,15 @@ namespace Marketplace_SE
             TextBlockViewHelpTicketDateAndTime.Text = "Date and time: " + currentTicket.DateAndTime;
             TextBoxViewHelpTicketDescription.Text = currentTicket.Descript;
             TextBlockViewHelpTicketClosed.Text = "Closed: " + currentTicket.Closed;
+
+            if(loadedTicket.Closed == "No")
+            {
+                ButtonViewHelpTicketCloseTicket.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TextBoxViewHelpTicketDescription.IsReadOnly = true;
+            }
         }
     }
 }
