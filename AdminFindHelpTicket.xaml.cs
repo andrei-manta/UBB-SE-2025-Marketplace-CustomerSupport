@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI;
+using Marketplace_SE.Data;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,6 +31,7 @@ namespace Marketplace_SE
         }
         private void OnButtonClickAdminSearchHelpTicket(object sender, RoutedEventArgs e)
         {
+
             TextBlockAdminFindHelpTicketUserIDNotFound.Visibility = Visibility.Collapsed;
             TextBlockAdminFindHelpTicketTypeUserID.Visibility = Visibility.Collapsed;
 
