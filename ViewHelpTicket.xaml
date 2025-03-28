@@ -34,6 +34,7 @@
              Width="250"
              IsReadOnly="True"
              x:Name="TextBoxViewHelpTicketDescription"/>
+            <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockViewHelpTicketClosed"/>
             <Button Content="Return" 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center" 

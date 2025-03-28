@@ -47,6 +47,7 @@ namespace Marketplace_SE
             TextBoxViewHelpTicketUserName.Text = currentTicket.UserName;
             TextBlockViewHelpTicketDateAndTime.Text = "Date and time: " + currentTicket.DateAndTime;
             TextBoxViewHelpTicketDescription.Text = currentTicket.Descript;
+            TextBlockViewHelpTicketClosed.Text = "Closed: " + currentTicket.Closed;
         }
     }
 }

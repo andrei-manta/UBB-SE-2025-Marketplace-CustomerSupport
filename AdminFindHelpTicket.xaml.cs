@@ -74,7 +74,7 @@ namespace Marketplace_SE
 
                 TextBlock textBlock = new TextBlock
                 {
-                    Text = "TICKET ID - USER ID - USER'S NAME - DATE AND TIME",
+                    Text = "TICKET ID - USER ID - USER'S NAME - DATE AND TIME - CLOSED",
                     Margin = new Thickness(0, 0, 0, 10),
                     FontSize = 16,
                     VerticalAlignment = VerticalAlignment.Center,

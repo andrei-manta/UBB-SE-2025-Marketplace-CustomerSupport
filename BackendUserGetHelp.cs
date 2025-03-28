@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using Marketplace_SE.Utilities;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Windows.Media.ClosedCaptioning;
 
 namespace Marketplace_SE
 {
@@ -17,7 +18,7 @@ namespace Marketplace_SE
             PushNewHelpTicketToDBSuccess,
             PushNewHelpTicketToDBFailure
         }
-        public static int PushNewHelpTicketToDB(string UserID, string UserName, string Description)
+        public static int PushNewHelpTicketToDB(string UserID, string UserName, string Description, string Closed)
         {
 
             Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
@@ -38,19 +39,21 @@ namespace Marketplace_SE
                 return (int)BackendUserGetHelpStatusCodes.PushNewHelpTicketToDBFailure;
             }
 
-            Database.database.Execute("INSERT INTO dbo.UserGetHelpTickets (UserID, UserName, DateAndTime, Descript) VALUES (@UID, @UN, @DAT, @D)",
+            Database.database.Execute("INSERT INTO dbo.UserGetHelpTickets (UserID, UserName, DateAndTime, Descript, Closed) VALUES (@UID, @UN, @DAT, @D, @C)",
                     new string[]
                     {
                         "@UID",
                         "@UN",
                         "@DAT",
-                        "@D"
+                        "@D",
+                        "@C"
                     }, new object[]
                     {
                         UserID,
                         UserName,
                         DateTime.Now.ToString("dd-MM-yyyy-HH-mm"),
-                        Description
+                        Description,
+                        Closed
                     }
                 );
 
@@ -206,24 +209,26 @@ namespace Marketplace_SE
         public string UserName { get; }
         public string DateAndTime { get; }
         public string Descript { get; }
+        public string Closed { get; }
 
-        public HelpTicket(string TicketID_, string UserID_, string UserName_, string DateHour_, string Description_)
+        public HelpTicket(string TicketID_, string UserID_, string UserName_, string DateHour_, string Description_, string Closed_)
         {
             TicketID = TicketID_;
             UserID = UserID_;
             UserName = UserName_;
             DateAndTime = DateHour_;
             Descript = Description_;
+            Closed = Closed_;
         }
 
         public string toStringExceptDescription()
         {
-            return TicketID.ToString() + "::" + UserID.ToString() + "::" + UserName.ToString() + "::" + DateAndTime.ToString();
+            return TicketID + "::" + UserID + "::" + UserName + "::" + DateAndTime + "::" + Closed;
         }
 
         public static HelpTicket FromHelpTicketFromDB(HelpTicketFromDB other)
         {
-            return new HelpTicket(other.TicketID.ToString(), other.UserID, other.UserName, other.DateAndTime, other.Descript);
+            return new HelpTicket(other.TicketID.ToString(), other.UserID, other.UserName, other.DateAndTime, other.Descript, other.Closed);
         }
     }
 
@@ -234,5 +239,6 @@ namespace Marketplace_SE
         public string UserName;
         public string DateAndTime;
         public string Descript;
+        public string Closed;
     }
 }

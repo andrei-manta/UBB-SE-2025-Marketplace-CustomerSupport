@@ -19,7 +19,8 @@ CREATE TABLE UserGetHelpTickets
 	UserID VARCHAR(50),
 	UserName VARCHAR(50),
 	DateAndTime VARCHAR(50),
-	Descript VARCHAR(50)
+	Descript VARCHAR(7000),
+	Closed VARCHAR(50)
 )
 
 GO;
