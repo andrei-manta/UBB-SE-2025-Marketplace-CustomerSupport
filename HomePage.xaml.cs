@@ -14,7 +14,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 
 
-namespace RecoverAccount
+namespace Marketplace_SE
 {
     public sealed partial class HomePage : Page
     {

@@ -14,14 +14,16 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 
 
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media.Imaging;
-using ClientChat.Data;
-using ClientChat.Objects;
-using ClientChat.Utilities;
+using Marketplace_SE.Data;
+using Marketplace_SE.Objects;
+using Marketplace_SE.Utilities;
 
 
 
@@ -36,26 +38,29 @@ namespace Marketplace_SE
     public sealed partial class ChatPage : Page
     {
 
-        private bool isConnected = false;
-        private int sendPort = 13000;
-        private int listenPort = 13001;
         private List<string> chatHistory = new();
 
 
         private Conversation conversation;
+        private long lastMessageTimestamp = 0;
         private User me;
         private User target;
 
-        public ChatPage()
+        private Task loopUpdater;
+        private CancellationTokenSource cancellationTokenSource;
+
+        public ChatPage(int hardcoded_template=0)
         {
             // Open database connection
             // Read Database.cs for guide
             Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-U503EH8\SQLEXPRESS;user id=sa;password=12345678");
             bool status = Database.database.Connect();
-            Console.WriteLine(status);
+
             if (!status)
             {
                 //database connection failed
+                //ShowDialog("Database connection error", "Error connecting to database");
+                
                 Notification notification = new Notification("Database connection error", "Error connecting to database");
                 notification.OkButton.Click += (s, e) =>
                 {
@@ -69,26 +74,23 @@ namespace Marketplace_SE
 
             //hardcoded users
 
-            this.me = new User("test1","");
-            this.me.SetId(0);
+            if (hardcoded_template == 0)
+            {
+                this.me = new User("test1", "");
+                this.me.SetId(0);
 
-            this.target = new User("test2","");
-            this.target.SetId(1);
+                this.target = new User("test2", "");
+                this.target.SetId(1);
+            } else
+            {
+                this.me = new User("test2", "");
+                this.me.SetId(1);
+
+                this.target = new User("test1", "");
+                this.target.SetId(0);
+            }
 
             this.InitializeComponent();
-            
-
-            if (me.username == "test1")
-            {
-                sendPort = 13000;
-                listenPort = 13001;
-            }
-            else if (me.username == "test2")
-            {
-                sendPort = 13001;
-                listenPort = 13000;
-            }
-
 
             //Database actions
             var data = Database.database.Get("SELECT * FROM dbo.Conversations WHERE ((user1=@MyID AND user2=@TargetID) OR (user2=@MyID AND user1=@TargetID))",
@@ -150,11 +152,16 @@ namespace Marketplace_SE
             //Sort messages timestamp
             messages.Sort((a, b) =>
             {
-                return b.timestamp - a.timestamp;
+                return (int)(a.timestamp - b.timestamp);
             });
 
             for (int i = 0; i < messages.Count; i++)
             {
+                if (messages[i].creator != me.id)
+                {
+                    lastMessageTimestamp = messages[i].timestamp;
+                }
+
                 if (messages[i].contentType == "text")
                 {
                     AddMessageToChat(messages[i].content, me.id == messages[i].creator);
@@ -170,7 +177,91 @@ namespace Marketplace_SE
                 }
             }
 
+            Debug.WriteLine(lastMessageTimestamp.ToString());
+
+            cancellationTokenSource = new CancellationTokenSource();
+            loopUpdater = Task.Run(() => UpdateLoop(cancellationTokenSource.Token), cancellationTokenSource.Token);
+
+
         }
+
+
+
+        public void StopUpdateLoop()
+        {
+            if (cancellationTokenSource != null)
+            {
+                cancellationTokenSource.Cancel();
+                cancellationTokenSource.Dispose();
+                cancellationTokenSource = null;
+            }
+        }
+
+        private void UpdateLoop(CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                // Update conversation with new messages
+
+                var data = Database.database.Get("SELECT * FROM dbo.Messages WHERE conversationId=@ConvID AND creator!=@MyID AND timestamp>@LastMessageTimestamp",
+                new string[]
+                {
+                    "@ConvID",
+                    "@MyID",
+                    "@LastMessageTimestamp"
+                }, new object[]
+                {
+                    conversation.id,
+                    me.id,
+                    lastMessageTimestamp
+
+                });
+
+                List<Message> messages = Database.database.ConvertToObject<Message>(data);
+                messages.Sort((a, b) =>
+                {
+                    return (int)(a.timestamp - b.timestamp);
+                });
+
+                for (int i = 0; i < messages.Count; i++)
+                {
+                    lastMessageTimestamp = messages[i].timestamp;
+
+                    if (messages[i].contentType == "text")
+                    {
+                        int idx = i;
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            AddMessageToChat(messages[idx].content, me.id == messages[idx].creator);
+                        });
+                    }
+                    else if (messages[i].contentType == "image")
+                    {
+                        int idx = i;
+                        byte[] imgBytes = DataEncoder.HexDecode(messages[idx].content);
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            DisplayImageFromBytes(imgBytes, me.id == messages[idx].creator);
+                        });
+                    }
+                    else
+                    {
+                        //must not happen
+                    }
+                }
+
+                try
+                {
+                    Task.Delay(1000, token).Wait();
+                }
+                catch (Exception)
+                {
+                    break;
+                }
+
+            }
+        }
+
 
 
         private void SendMsgDatabase(object _content, string contentType = "")
@@ -222,15 +313,6 @@ namespace Marketplace_SE
                 );
         }
 
-        private void ConnectButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!isConnected)
-            {
-                isConnected = true;
-                StartListening();
-                AddMessageToChat("Connected and listening on port " + listenPort, false);
-            }
-        }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
@@ -238,13 +320,13 @@ namespace Marketplace_SE
             if (string.IsNullOrEmpty(message)) return;
 
             SendMsgDatabase(message);
-            SendMessage(message);
             AddMessageToChat(message, true);
             MessageBox.Text = "";
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            StopUpdateLoop();
             Database.database.Close();
             Frame.Navigate(typeof(MainMarketplacePage));
         }
@@ -304,66 +386,7 @@ namespace Marketplace_SE
         }
 
 
-
-        private void StartListening()
-        {
-            Thread listenerThread = new Thread(() =>
-            {
-                TcpListener listener = new TcpListener(IPAddress.Any, listenPort);
-                listener.Start();
-
-                while (true)
-                {
-                    try
-                    {
-                        TcpClient client = listener.AcceptTcpClient();
-                        NetworkStream stream = client.GetStream();
-                        byte[] buffer = new byte[1024 * 1024]; // 1MB buffer to support image files
-                        int bytesRead = stream.Read(buffer, 0, buffer.Length);
-
-                        // Detect if message is an image
-                        bool isImage = bytesRead > 4 &&
-                                       buffer[0] == (byte)'I' &&
-                                       buffer[1] == (byte)'M' &&
-                                       buffer[2] == (byte)'G' &&
-                                       buffer[3] == (byte)'|';
-
-                        if (isImage)
-                        {
-                            byte[] imageBytes = buffer.Skip(4).Take(bytesRead - 4).ToArray();
-
-                            DispatcherQueue.TryEnqueue(() =>
-                            {
-                                DisplayImageFromBytes(imageBytes, isClient: false);
-                                chatHistory.Add("[Peer]: <received image>");
-                            });
-                        }
-                        else
-                        {
-                            string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                            DispatcherQueue.TryEnqueue(() =>
-                            {
-                                AddMessageToChat(message, isClient: false);
-                            });
-                        }
-
-                        client.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        DispatcherQueue.TryEnqueue(() =>
-                        {
-                            AddMessageToChat("Receive error: " + ex.Message, false);
-                        });
-                    }
-                }
-            });
-
-            listenerThread.IsBackground = true;
-            listenerThread.Start();
-        }
-
-
+        /*
         private void SendMessage(string message)
         {
             try
@@ -383,6 +406,7 @@ namespace Marketplace_SE
                 });
             }
         }
+        */
 
         private async void AttachButton_Click(object sender, RoutedEventArgs e)
         {
@@ -392,7 +416,7 @@ namespace Marketplace_SE
             picker.FileTypeFilter.Add(".jpeg");
             picker.FileTypeFilter.Add(".png");
 
-            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
             WinRT.Interop.InitializeWithWindow.Initialize(picker, hWnd);
 
             var file = await picker.PickSingleFileAsync();
@@ -404,33 +428,17 @@ namespace Marketplace_SE
                 SendMsgDatabase(bytes, "image");
 
                 // Tag the image so receiver knows what it is
-                byte[] header = Encoding.UTF8.GetBytes("IMG|");
+        /*  
+        byte[] header = Encoding.UTF8.GetBytes("IMG|");
                 byte[] fullMessage = header.Concat(bytes).ToArray();
 
                 SendBytes(fullMessage);
+        */
                 DisplayImageFromBytes(bytes, isClient: true);
                 chatHistory.Add($"[You]: <sent image>");
             }
         }
 
-        private void SendBytes(byte[] data)
-        {
-            try
-            {
-                TcpClient client = new TcpClient("127.0.0.1", sendPort);
-                NetworkStream stream = client.GetStream();
-                stream.Write(data, 0, data.Length);
-                stream.Close();
-                client.Close();
-            }
-            catch (Exception ex)
-            {
-                DispatcherQueue.TryEnqueue(() =>
-                {
-                    AddMessageToChat("Send failed: " + ex.Message, false);
-                });
-            }
-        }
 
         private void DisplayImageFromBytes(byte[] imageData, bool isClient)
         {
