@@ -60,7 +60,7 @@
                                         VerticalAlignment="Center" 
                                         Width="150" 
                                         Height="50" 
-                                        Click="OnButtonClickChatWithSeller"
+                                        Click="OnButtonClickChatWithSeller2"
                                         x:Name="ButtonChatWithSeller2"/>
                                 </StackPanel>
                             </Border>
