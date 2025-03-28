@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Marketplace_SE.Objects;
+using Marketplace_SE.Utilities;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -38,6 +40,15 @@ namespace Marketplace_SE
         private void OnButtonClickChatWithSeller(object sender, RoutedEventArgs e)
         {
             //IONUT AND CALIN HERE
+            FrameNavigation.NavigateWithConstructorParameters<ChatPage>(this.Frame, 0);
+            //Frame.Navigate(typeof(ChatPage));
+        }
+
+        private void OnButtonClickChatWithSeller2(object sender, RoutedEventArgs e)
+        {
+            //IONUT AND CALIN HERE
+            FrameNavigation.NavigateWithConstructorParameters<ChatPage>(this.Frame, 1);
+            //Frame.Navigate(typeof(ChatPage));
         }
 
         private void OnButtonClickOpenHelp(object sender, RoutedEventArgs e)
