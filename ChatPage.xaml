@@ -35,7 +35,6 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="8">
-                <Button x:Name="ConnectButton" Content="Connect" Click="ConnectButton_Click" Width="80"/>
                 <Button x:Name="ExportButton" Content="Export" Click="ExportButton_Click" Width="80"/>
                 <Button x:Name="AttachButton" Content="📎 Attach Image" Click="AttachButton_Click" Width="130"/>
                 <Button x:Name="BackButton" Content="Exit conversation" Click="BackButton_Click" Width="130"/>
