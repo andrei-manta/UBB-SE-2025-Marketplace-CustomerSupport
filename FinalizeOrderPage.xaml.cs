@@ -13,8 +13,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.Threading.Tasks;
-using Marketplace_SE.FeaturesRobert.HardwareSurvey;
-using Marketplace_SE.FeaturesRobert.Rating;
+using Marketplace_SE.HardwareSurvey;
+using Marketplace_SE.Rating;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.

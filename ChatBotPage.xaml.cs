@@ -47,7 +47,7 @@ namespace Marketplace_SE
         {
             ChatBotOptionsPanel.Children.Clear();
 
-            foreach(Node child in children)
+            foreach (Node child in children)
             {
                 Grid optionRow = CreateOptionGrid(child);
                 ChatBotOptionsPanel.Children.Add(optionRow);
@@ -131,7 +131,8 @@ namespace Marketplace_SE
                 {
                     this.Frame.GoBack();
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"Fatal error: {ex}");
             }

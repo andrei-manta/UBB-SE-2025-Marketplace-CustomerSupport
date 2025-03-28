@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 
-namespace RecoverAccount
+namespace Marketplace_SE
 {
     public sealed partial class ResetPasswordPage : Page
     {
@@ -41,7 +41,7 @@ namespace RecoverAccount
 
             UpdateUserPassword(/*UserID,*/newPassword);
             ShowDialog("Success", "Your password has been reset.");
-            Frame.Navigate(typeof(HomePage)); 
+            Frame.Navigate(typeof(LoginPage));
         }
 
         private void UpdateUserPassword(string newPassword)
@@ -77,10 +77,10 @@ namespace RecoverAccount
 
             StrengthBar.Value = strength;
 
-        RequirementsText.Text =
-            $"• Min 8 chars: {(password.Length >= 8 ? "✅" : "❌")}  " +
-            $"• 1 digit: {(password.Any(char.IsDigit) ? "✅" : "❌")}  " +
-            $"• 1 capital: {(password.Any(char.IsUpper) ? "✅" : "❌")}";
+            RequirementsText.Text =
+                $"• Min 8 chars: {(password.Length >= 8 ? "✅" : "❌")}  " +
+                $"• 1 digit: {(password.Any(char.IsDigit) ? "✅" : "❌")}  " +
+                $"• 1 capital: {(password.Any(char.IsUpper) ? "✅" : "❌")}";
 
         }
     }
