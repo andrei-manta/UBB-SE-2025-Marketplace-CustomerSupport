@@ -19,14 +19,49 @@ namespace Marketplace_SE
         }
         public static int PushNewHelpTicketToDB(string UserID, string UserName, string Description)
         {
-            //append current datetime, then push ticket in DB
-            
+
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
+            bool status = Database.database.Connect();
+
+            if (!status)
+            {
+                //database connection failed
+                //ShowDialog("Database connection error", "Error connecting to database");
+
+                Notification notification = new Notification("Database connection error", "Error connecting to database");
+                notification.OkButton.Click += (s, e) =>
+                {
+                    notification.GetWindow().Close();
+                    Database.database.Close();
+                };
+                notification.GetWindow().Activate();
+                return (int)BackendUserGetHelpStatusCodes.PushNewHelpTicketToDBFailure;
+            }
+
+            Database.database.Execute("INSERT INTO dbo.UserGetHelpTickets (UserID, UserName, DateAndTime, Descript) VALUES (@UID, @UN, @DAT, @D)",
+                    new string[]
+                    {
+                        "@UID",
+                        "@UN",
+                        "@DAT",
+                        "@D"
+                    }, new object[]
+                    {
+                        UserID,
+                        UserName,
+                        DateTime.Now.ToString("dd-MM-yyyy-HH-mm"),
+                        Description
+                    }
+                );
+
+            Database.database.Close();
+
             return (int)BackendUserGetHelpStatusCodes.PushNewHelpTicketToDBSuccess;
         }
 
         public static bool DoesUserIDExist(string UserID)
         {
-            //look for it in DB
+            //look for it in DB (hardcoded for now)
 
             return true;
         }
@@ -74,6 +109,8 @@ namespace Marketplace_SE
             {
                 returnList.Add(HelpTicket.FromHelpTicketFromDB(each));
             }
+
+            Database.database.Close();
 
             return returnList;
         }
