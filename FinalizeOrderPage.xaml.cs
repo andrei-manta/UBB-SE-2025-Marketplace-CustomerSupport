@@ -33,6 +33,31 @@ namespace Marketplace_SE
         {
             this.InitializeComponent();
 
+            // Initialize database connection if not already initialized
+            if (Database.database == null)
+            {
+                try
+                {
+                    // Create database connection 
+                    Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=Robert\SQLEXPRESS;user id=sa;password=Sawanari12!");
+                    bool connected = Database.database.Connect();
+
+                    if (connected)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Database connected successfully");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Failed to connect to database");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Database connection error: {ex.Message}");
+                }
+            }
+
+
             // Create placeholder services (will be replaced with real implementations)
             var ratingService = new DatabaseRatingService();
             var hardwareSurveyService = new DatabaseHardwareSurveyService();
