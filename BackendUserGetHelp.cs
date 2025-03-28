@@ -43,7 +43,7 @@ namespace Marketplace_SE
             return returnList;
         }
 
-        public static List<string> GetTicketIDsMatchingCriteria(string UserID, string DateAndTime, bool ExactDate, bool StartingDate, bool EndingDate)
+        public static List<string> GetTicketIDsMatchingCriteria(string UserID)
         {
             List<string> returnList = new List<string>();
 
