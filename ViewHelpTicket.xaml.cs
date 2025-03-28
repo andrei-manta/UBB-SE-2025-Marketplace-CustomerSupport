@@ -24,15 +24,57 @@ namespace Marketplace_SE
     /// </summary>
     public sealed partial class ViewHelpTicket : Page
     {
-        string data = "";
+        HelpTicket loadedTicket;
 
         public ViewHelpTicket()
         {
             this.InitializeComponent();
+
+            TextBlockViewHelpTicketDescriptionModificationFailed.Visibility = Visibility.Collapsed;
+            TextBlockViewHelpTicketDescriptionModificationSucceeded.Visibility = Visibility.Collapsed;
+            TextBlockViewHelpTicketTicketClosureFailed.Visibility = Visibility.Collapsed;
+            TextBlockViewHelpTicketTicketClosureSucceeded.Visibility = Visibility.Collapsed;
         }
         private void OnButtonClickNavigateViewHelpTicketPageAdminAccountPage(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(AdminAccountPage));
+        }
+        private void OnButtonClickViewHelpTicketSaveDescriptionModifications(object sender, RoutedEventArgs e)
+        {
+            int successCode = BackendUserGetHelp.UpdateHelpTicketDescriptionInDB(loadedTicket.TicketID, TextBoxViewHelpTicketDescription.Text);
+
+            if (successCode == (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.UpdateHelpTicketInDBFailure)
+            {
+                TextBlockViewHelpTicketDescriptionModificationFailed.Visibility = Visibility.Visible;
+            }
+            if (successCode == (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.UpdateHelpTicketInDBSuccess)
+            {
+                TextBlockViewHelpTicketDescriptionModificationSucceeded.Visibility = Visibility.Visible;
+                ButtonViewHelpTicketSaveDescriptionModifications.Visibility = Visibility.Collapsed;
+            }
+        }
+        private void OnTextChangedTextBoxViewHelpTicketDescription(object sender, RoutedEventArgs e)
+        {
+            ButtonViewHelpTicketSaveDescriptionModifications.Visibility = Visibility.Visible;
+        }
+        private void OnButtonClickViewHelpTicketCloseTicket(object sender, RoutedEventArgs e)
+        {
+            int successCode = BackendUserGetHelp.CloseHelpTicketInDB(loadedTicket.TicketID);
+
+            if(successCode == (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.ClosedHelpTicketInDBFailure)
+            {
+                TextBlockViewHelpTicketTicketClosureFailed.Visibility = Visibility.Visible;
+            }
+            if (successCode == (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.ClosedHelpTicketInDBSuccess)
+            {
+                TextBlockViewHelpTicketTicketClosureSucceeded.Visibility = Visibility.Visible;
+                TextBoxViewHelpTicketDescription.IsReadOnly = true;
+                ButtonViewHelpTicketSaveDescriptionModifications.Visibility = Visibility.Collapsed;
+                ButtonViewHelpTicketCloseTicket.Visibility = Visibility.Collapsed;
+                ButtonViewHelpTicketSaveDescriptionModifications.Visibility = Visibility.Collapsed;
+                TextBoxViewHelpTicketDescription.Text = loadedTicket.Descript;
+                TextBlockViewHelpTicketClosed.Text = "Closed: " + loadedTicket.Closed;
+            }
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -41,13 +83,23 @@ namespace Marketplace_SE
             List<string> ticketID = new List<string>();
             ticketID.Add(e.Parameter as string);
             HelpTicket currentTicket = BackendUserGetHelp.LoadTicketsFromDB(ticketID)[0];
+            loadedTicket = currentTicket;
 
             TextBlockViewHelpTicketNumber.Text = "Ticket number: " + currentTicket.TicketID;
-            TextBoxViewHelpTicketUserID.Text = currentTicket.UserID;
-            TextBoxViewHelpTicketUserName.Text = currentTicket.UserName;
+            TextBlockViewHelpTicketUserID.Text = "User's ID: " + currentTicket.UserID;
+            TextBlockViewHelpTicketUserName.Text = "User's name: " + currentTicket.UserName;
             TextBlockViewHelpTicketDateAndTime.Text = "Date and time: " + currentTicket.DateAndTime;
             TextBoxViewHelpTicketDescription.Text = currentTicket.Descript;
             TextBlockViewHelpTicketClosed.Text = "Closed: " + currentTicket.Closed;
+
+            if(loadedTicket.Closed == "No")
+            {
+                ButtonViewHelpTicketCloseTicket.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                TextBoxViewHelpTicketDescription.IsReadOnly = true;
+            }
         }
     }
 }
