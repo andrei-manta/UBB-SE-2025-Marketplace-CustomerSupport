@@ -50,7 +50,7 @@ namespace Marketplace_SE
         }
         private void OnButtonClickResetPassword(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ResetPasswordPage));
+            Frame.Navigate(typeof(EnterIdPage));
         }
     }
 }
