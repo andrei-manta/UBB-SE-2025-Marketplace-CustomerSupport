@@ -42,6 +42,30 @@ INSERT INTO Orders(name,description,cost,created,sellerId,buyerId,orderStatus) V
 	'shipping'
 )
 
+# Not "completed" orders
+
+
+INSERT INTO Orders(name,description,cost,created,sellerId,buyerId,orderStatus) VALUES (
+	'bmw m4',
+	'50k km , good condition',
+	60000.0,
+	1743210486533,
+	1,
+	-1,
+	'waiting buyer'
+)
+
+
+INSERT INTO Orders(name,description,cost,created,sellerId,buyerId,orderStatus) VALUES (
+	'jordan',
+	'limited edition 1/100',
+	1500.0,
+	1743210496533,
+	0,
+	-1,
+	'waiting buyer'
+)
+
 
 
 SELECT * FROM Orders;
