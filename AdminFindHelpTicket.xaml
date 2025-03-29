@@ -11,33 +11,14 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock Text="Look up tickets by User ID and/or by creation date" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock Text="Look up tickets by User ID" HorizontalAlignment="Center" VerticalAlignment="Center" />
             <TextBox PlaceholderText="User ID" 
              HorizontalAlignment="Center" 
              VerticalAlignment="Center" 
              Width="250"
              x:Name="TextBoxLookupHelpTicketUserID"/>
-            <TextBox PlaceholderText="Creation date dd-mm-yyyy" 
-             HorizontalAlignment="Center" 
-             VerticalAlignment="Center" 
-             Width="250"
-             x:Name="TextBoxLookupHelpTicketCreationDate"/>
-            <CheckBox 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Content="Search only this exact date" Checked="CheckedCheckBoxAdminFindTicketSearchExactDate" Unchecked="UncheckedCheckBoxAdminFindTicketSearchExactDate" x:Name="CheckBoxAdminFindTicketSearchExactDate"/>
-            <CheckBox 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Content="Search starting from this date" Checked="CheckedCheckBoxAdminFindTicketSearchStartingDate" Unchecked="UncheckedCheckBoxAdminFindTicketSearchStartingDate" x:Name="CheckBoxAdminFindTicketSearchStartingDate"/>
-            <CheckBox 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center"
-                Content="Search up to this date" Checked="CheckedCheckBoxAdminFindTicketSearchEndingDate" Unchecked="UncheckedCheckBoxAdminFindTicketSearchEndingDate" x:Name="CheckBoxAdminFindTicketSearchEndingDate"/>
             <TextBlock Text="User ID not found!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketUserIDNotFound" Visibility="Collapsed"/>
-            <TextBlock Text="Wrong date!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketWrongDate" Visibility="Collapsed"/>
-            <TextBlock Text="Choose a checkbox!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketChooseCheckbox" Visibility="Collapsed"/>
-            <TextBlock Text="Chosen date can't be in the future!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketChosenDayCantBeInFuture" Visibility="Collapsed"/>
+            <TextBlock Text="Type a user ID!" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="TextBlockAdminFindHelpTicketTypeUserID" Visibility="Collapsed"/>
             <ScrollViewer>
                 <StackPanel x:Name="StackPanelAdminFindHelpTickets">
 

@@ -53,7 +53,7 @@ namespace Marketplace_SE
         {
             // Open database connection
             // Read Database.cs for guide
-            Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-U503EH8\SQLEXPRESS;user id=sa;password=12345678");
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
             bool status = Database.database.Connect();
 
             if (!status)
@@ -66,7 +66,14 @@ namespace Marketplace_SE
                 {
                     notification.GetWindow().Close();
                     Database.database.Close();
-                    Frame.Navigate(typeof(MainMarketplacePage));
+                    if (hardcoded_template == 0 || hardcoded_template == 1 || hardcoded_template == 2)
+                    {
+                        Frame.Navigate(typeof(MainMarketplacePage));
+                    }
+                    if (hardcoded_template == 3)
+                    {
+                        Frame.Navigate(typeof(AdminAccountPage));
+                    }
                 };
                 notification.GetWindow().Activate();
                 return;
@@ -81,13 +88,30 @@ namespace Marketplace_SE
 
                 this.target = new User("test2", "");
                 this.target.SetId(1);
-            } else
+            }
+            if(hardcoded_template == 1)
             {
                 this.me = new User("test2", "");
                 this.me.SetId(1);
 
                 this.target = new User("test1", "");
                 this.target.SetId(0);
+            }
+            if(hardcoded_template == 2)
+            {
+                this.me = new User("test3", "");
+                this.me.SetId(2);
+
+                this.target = new User("test4", "");
+                this.target.SetId(3);
+            }
+            if (hardcoded_template == 3)
+            {
+                this.me = new User("test4", "");
+                this.me.SetId(3);
+
+                this.target = new User("test3", "");
+                this.target.SetId(2);
             }
 
             this.InitializeComponent();
@@ -328,7 +352,14 @@ namespace Marketplace_SE
         {
             StopUpdateLoop();
             Database.database.Close();
-            Frame.Navigate(typeof(MainMarketplacePage));
+            if(this.me.id == 0 || this.me.id == 1 || this.me.id == 2)
+            {
+                Frame.Navigate(typeof(MainMarketplacePage));
+            }
+            if (this.me.id == 3)
+            {
+                Frame.Navigate(typeof(AdminAccountPage));
+            }
         }
 
         private async void ExportButton_Click(object sender, RoutedEventArgs e)
@@ -339,7 +370,7 @@ namespace Marketplace_SE
             savePicker.SuggestedFileName = "ChatHistory";
 
             // Required for WinUI 3 desktop apps
-            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
             WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hWnd);
 
             var file = await savePicker.PickSaveFileAsync();
