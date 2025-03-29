@@ -49,7 +49,7 @@ namespace Marketplace_SE
 
             if(isDataCorrect)
             {
-                int returnCode = BackendUserGetHelp.PushNewHelpTicketToDB(TextBoxOpenTicketUserID.Text, TextBoxOpenTicketUserName.Text, TextBoxOpenTicketDescription.Text);
+                int returnCode = BackendUserGetHelp.PushNewHelpTicketToDB(TextBoxOpenTicketUserID.Text, TextBoxOpenTicketUserName.Text, TextBoxOpenTicketDescription.Text, "No");
                 switch(returnCode)
                 {
                     case (int)BackendUserGetHelp.BackendUserGetHelpStatusCodes.PushNewHelpTicketToDBSuccess:

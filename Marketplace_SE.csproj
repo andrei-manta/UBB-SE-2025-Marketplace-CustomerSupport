@@ -28,6 +28,7 @@
     <None Remove="RegisterPage.xaml" />
     <None Remove="ResetPasswordPage.xaml" />
     <None Remove="ReturnItemPage.xaml" />
+    <None Remove="UserFindCallPage.xaml" />
     <None Remove="ViewHelpTicket.xaml" />
   </ItemGroup>
 
@@ -135,6 +136,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Objects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="UserFindCallPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
