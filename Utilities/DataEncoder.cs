@@ -120,5 +120,20 @@ namespace Marketplace_SE.Utilities
             return output;
             */
         }
+
+
+        public static string ConvertTimestampToDate(ulong timestamp)
+        {
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds((long)timestamp);
+            return dateTimeOffset.ToString("MM/dd/yyyy");
+        }
+
+        public static string ConvertTimestampToLocalDateTime(ulong timestamp)
+        {
+            DateTimeOffset utcTime = DateTimeOffset.FromUnixTimeMilliseconds((long)timestamp);
+            DateTimeOffset localTime = utcTime.ToLocalTime();
+            return localTime.ToString("MM/dd/yyyy HH:mm:ss");
+        }
+
     }
 }

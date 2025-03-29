@@ -31,11 +31,14 @@ namespace Marketplace_SE
 
         private void OnButtonClickLogin(object sender, RoutedEventArgs e)
         {
-            if (LineEditUsername.Text == "admin" && LineEditPassword.Text == "password")
+            if (LineEditUsername.Text == "" && LineEditPassword.Text == "") {
+                Frame.Navigate(typeof(MainMarketplacePage));
+            }
+            else if (LineEditUsername.Text == "admin" && LineEditPassword.Text == "password")
             {
                 Frame.Navigate(typeof(AdminAccountPage));
             }
-            if (LineEditUsername.Text == "username" && LineEditPassword.Text == "password")
+            else if (LineEditUsername.Text == "username" && LineEditPassword.Text == "password")
             {
                 Frame.Navigate(typeof(MainMarketplacePage));
             }

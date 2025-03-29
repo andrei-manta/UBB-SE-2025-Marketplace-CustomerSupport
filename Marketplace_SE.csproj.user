@@ -17,6 +17,9 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="NEW_MainMarketplacePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="ReturnItemPage.xaml">
       <SubType>Designer</SubType>
     </Page>
