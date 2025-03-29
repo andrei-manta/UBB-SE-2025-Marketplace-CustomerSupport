@@ -9,68 +9,63 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <StackPanel>
-            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
-                <TextBlock Text="Your information: name - e-mail - phone number" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
-                <TextBlock Text="Your orders:" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Border>
-            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
-                <ScrollViewer HorizontalScrollBarVisibility="Hidden" 
-                      VerticalScrollBarVisibility="Visible" 
-                      Width="500" 
-                      Height="500">
-                    <StackPanel>
-                        <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Book - Title - Cost - Date" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <Button Content="View order" 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            Width="150" 
-                            Height="50" 
-                            Click="OnButtonClickViewOrder"
-                            x:Name="ButtonClickViewOrder"/>
-                                <Button Content="Return item" 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            Width="150" 
-                            Height="50" 
-                            Click="OnButtonClickReturnItem"
-                            x:Name="ButtonClickReturnItem"/>
-                            </StackPanel>
-                        </Border>
-                        <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="10">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Car - Brand - Cost - Date" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <Button Content="View order" 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            Width="150" 
-                            Height="50" 
-                            Click="OnButtonClickViewOrder"
-                            x:Name="ButtonClickViewOrder2"/>
-                                <Button Content="Return item" 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            Width="150" 
-                            Height="50" 
-                            Click="OnButtonClickReturnItem"
-                            x:Name="ButtonClickReturnItem2"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
-            <Button Content="Return to items list" 
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" 
+                BorderBrush="{ThemeResource SystemAccentColor}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20"
+                Margin="0,0,0,20"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <StackPanel>
+                <TextBlock Text="Your Information" 
+                           Style="{StaticResource SubtitleTextBlockStyle}" 
+                           Margin="0,0,0,10"/>
+                <TextBlock x:Name="UserInfoText" 
+                           Text="Name - Email - Phone Number" 
+                           Style="{StaticResource BodyTextBlockStyle}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" 
+                BorderBrush="{ThemeResource SystemAccentColor}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="20"
+                Margin="0,0,0,15"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <TextBlock Text="Your Orders" 
+                       Style="{StaticResource SubtitleTextBlockStyle}" 
+                       HorizontalAlignment="Left"/>
+        </Border>
+
+        <Border Grid.Row="2" 
+                BorderBrush="{ThemeResource SystemAccentColorLight2}" 
+                BorderThickness="1" 
+                CornerRadius="8" 
+                Padding="10"
+                Margin="0,0,0,20"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                          VerticalScrollBarVisibility="Auto" 
+                          Padding="5">
+                <StackPanel x:Name="orderList" Spacing="10"/>
+            </ScrollViewer>
+        </Border>
+
+        <Button Grid.Row="3" 
+                Content="Return to Items List" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Width="150" 
-                Height="50" 
+                Padding="15,10"
+                Style="{StaticResource AccentButtonStyle}"
                 Click="OnButtonClickNavigateAccountPageMainPage"
                 x:Name="ButtonClickNavigateAccountPageMainPage"/>
-        </StackPanel>
     </Grid>
 </Page>

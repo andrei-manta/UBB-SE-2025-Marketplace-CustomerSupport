@@ -18,6 +18,9 @@
       <SubType>Designer</SubType>
     </None>
     <Page Update="UserFindCallPage.xaml">
+            <SubType>Designer</SubType>
+    </Page>
+    <Page Update="NEW_MainMarketplacePage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="ReturnItemPage.xaml">
