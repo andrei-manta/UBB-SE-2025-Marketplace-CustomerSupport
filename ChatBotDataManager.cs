@@ -15,7 +15,7 @@ namespace Marketplace_SE
         public static Node LoadTree()
         {
             // Create database connection
-            Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-U503EH8\SQLEXPRESS;user id=sa;password=12345678");
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
             Database.database.Connect();
 
             // Fetch the data and insert it into each node
@@ -27,17 +27,22 @@ namespace Marketplace_SE
             if (nodes.ContainsKey(1))
             {
                 Node root = nodes[1];
+                Database.database.Close();
                 return root;
             }
             else
             {
                 Node root = new Node { ButtonLabel = "", LabelText = "", Response = "Error: Chat has failed to load. Please restart the service." };
+                Database.database.Close();
                 return root;
             }
         }
 
         private static Dictionary<int, Node> FetchChatBotData()
         {
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
+            Database.database.Connect();
+
             // Fetch data for all nodes
             string queryNodes = "SELECT pid, button_label, label_text, response_text FROM ChatBotNodes";
             var nodeRows = Database.database.Get(queryNodes);
@@ -60,11 +65,15 @@ namespace Marketplace_SE
                 };
             }
 
+            Database.database.Close();
             return nodes;
         }
 
         private static Dictionary<int, Node> LoadRelationships(Dictionary<int, Node> nodes)
         {
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
+            Database.database.Connect();
+
             // Fetch relationship data
             string queryRelationships = "SELECT ParentID, ChildID FROM ChatBotChildren";
             var relRows = Database.database.Get(queryRelationships);
@@ -81,6 +90,7 @@ namespace Marketplace_SE
                 }
             }
 
+            Database.database.Close();
             return nodes;
         }
     }
