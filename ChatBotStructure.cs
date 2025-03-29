@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatBot
+namespace Marketplace_SE
 {
     public class Node()
     {
+        public int? Id { get; set; } // Nullable
         // Button Text
         public required string ButtonLabel { get; set; }
         // Label Text
