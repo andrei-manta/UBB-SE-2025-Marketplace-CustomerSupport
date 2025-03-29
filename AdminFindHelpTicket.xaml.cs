@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI;
+using Marketplace_SE.Data;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,82 +29,29 @@ namespace Marketplace_SE
         {
             this.InitializeComponent();
         }
-        private void CheckedCheckBoxAdminFindTicketSearchExactDate(object sender, RoutedEventArgs e)
-        {
-            CheckBoxAdminFindTicketSearchStartingDate.IsChecked = false;
-            CheckBoxAdminFindTicketSearchEndingDate.IsChecked = false;
-        }
-        private void UncheckedCheckBoxAdminFindTicketSearchExactDate(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void CheckedCheckBoxAdminFindTicketSearchStartingDate(object sender, RoutedEventArgs e)
-        {
-            CheckBoxAdminFindTicketSearchExactDate.IsChecked = false;
-            CheckBoxAdminFindTicketSearchEndingDate.IsChecked = false;
-        }
-        private void UncheckedCheckBoxAdminFindTicketSearchStartingDate(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void CheckedCheckBoxAdminFindTicketSearchEndingDate(object sender, RoutedEventArgs e)
-        {
-            CheckBoxAdminFindTicketSearchStartingDate.IsChecked = false;
-            CheckBoxAdminFindTicketSearchExactDate.IsChecked = false;
-        }
-        private void UncheckedCheckBoxAdminFindTicketSearchEndingDate(object sender, RoutedEventArgs e)
-        {
-
-        }
         private void OnButtonClickAdminSearchHelpTicket(object sender, RoutedEventArgs e)
         {
+
             TextBlockAdminFindHelpTicketUserIDNotFound.Visibility = Visibility.Collapsed;
-            TextBlockAdminFindHelpTicketWrongDate.Visibility = Visibility.Collapsed;
-            TextBlockAdminFindHelpTicketChooseCheckbox.Visibility = Visibility.Collapsed;
-            TextBlockAdminFindHelpTicketChosenDayCantBeInFuture.Visibility = Visibility.Collapsed;
+            TextBlockAdminFindHelpTicketTypeUserID.Visibility = Visibility.Collapsed;
 
             bool errorInInput = false;
 
-            if (!BackendUserGetHelp.DoesUserIDExist(TextBoxLookupHelpTicketUserID.Text))
+            if(TextBoxLookupHelpTicketUserID.Text == "")
             {
-                TextBlockAdminFindHelpTicketUserIDNotFound.Visibility = Visibility.Visible;
+                TextBlockAdminFindHelpTicketTypeUserID.Visibility = Visibility.Visible;
                 errorInInput = true;
             }
-
-            if(!(CheckBoxAdminFindTicketSearchStartingDate.IsChecked ?? false) && !(CheckBoxAdminFindTicketSearchExactDate.IsChecked ?? false) && !(CheckBoxAdminFindTicketSearchEndingDate.IsChecked ?? false))
-            {
-                TextBlockAdminFindHelpTicketChooseCheckbox.Visibility = Visibility.Visible;
-                errorInInput = true;
-            }
-
-            DateTime parsedDate;
-            bool isDateValid = DateTime.TryParseExact(TextBoxLookupHelpTicketCreationDate.Text, "dd-MM-yyyy",
-                                                      System.Globalization.CultureInfo.InvariantCulture,
-                                                      System.Globalization.DateTimeStyles.None,
-                                                      out parsedDate);
-
-            int compare;
-            if (isDateValid)
-            {
-                DateTime today = DateTime.Today;
-                compare = DateTime.Compare(today, parsedDate);
-                if (compare < 0)
+            else
+                if (!BackendUserGetHelp.DoesUserIDExist(TextBoxLookupHelpTicketUserID.Text))
                 {
-                    TextBlockAdminFindHelpTicketChosenDayCantBeInFuture.Visibility = Visibility.Visible;
+                    TextBlockAdminFindHelpTicketUserIDNotFound.Visibility = Visibility.Visible;
                     errorInInput = true;
                 }
-            }
-
-            if (!isDateValid)
-            {
-                TextBlockAdminFindHelpTicketWrongDate.Visibility = Visibility.Visible;
-                errorInInput = true;
-            }
 
             if(!errorInInput)
             {
-                List<string> helpTicketIDs = BackendUserGetHelp.GetTicketIDsMatchingCriteria(TextBoxLookupHelpTicketUserID.Text, TextBoxLookupHelpTicketCreationDate.Text, CheckBoxAdminFindTicketSearchExactDate.IsChecked ?? false, CheckBoxAdminFindTicketSearchStartingDate.IsChecked ?? false, CheckBoxAdminFindTicketSearchEndingDate.IsChecked ?? false);
-
+                List<string> helpTicketIDs = BackendUserGetHelp.GetTicketIDsMatchingCriteria(TextBoxLookupHelpTicketUserID.Text);
                 List<HelpTicket> helpTickets = BackendUserGetHelp.LoadTicketsFromDB(helpTicketIDs);
 
                 StackPanelAdminFindHelpTickets.Children.Clear();
@@ -126,7 +74,7 @@ namespace Marketplace_SE
 
                 TextBlock textBlock = new TextBlock
                 {
-                    Text = "TICKET ID - USER ID - USER'S NAME - DATE AND TIME",
+                    Text = "TICKET ID - USER ID - USER'S NAME - DATE AND TIME - CLOSED",
                     Margin = new Thickness(0, 0, 0, 10),
                     FontSize = 16,
                     VerticalAlignment = VerticalAlignment.Center,
