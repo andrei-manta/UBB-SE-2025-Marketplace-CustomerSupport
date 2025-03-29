@@ -12,7 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using ChatBot;
+//using ChatBot;
 using Microsoft.UI.Text;
 
 namespace Marketplace_SE

@@ -39,7 +39,7 @@ namespace Marketplace_SE
                 try
                 {
                     // Create database connection 
-                    Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=Robert\SQLEXPRESS;user id=sa;password=Sawanari12!");
+                    Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
                     bool connected = Database.database.Connect();
 
                     if (connected)
@@ -69,6 +69,8 @@ namespace Marketplace_SE
 
             // Register for page loading event to ensure XamlRoot is set
             Loaded += FinalizeOrderPage_Loaded;
+
+            Database.database.Close();
         }
 
         private void FinalizeOrderPage_Loaded(object sender, RoutedEventArgs e)
@@ -150,8 +152,13 @@ namespace Marketplace_SE
                             ratingData.AppVersion
                         };
 
+                        Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
+                        bool connected = Database.database.Connect();
+
                         // Execute the query
                         int result = Database.database.Execute(query, args, values);
+
+                        Database.database.Close();
                     }
                 }
                 catch (Exception ex)
@@ -209,6 +216,9 @@ namespace Marketplace_SE
                             hardwareData.AppVersion
                         };
 
+                        Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
+                        bool connected = Database.database.Connect();
+
                         // Execute the query
                         int result = Database.database.Execute(query, args, values);
 
@@ -221,6 +231,8 @@ namespace Marketplace_SE
                         System.Diagnostics.Debug.WriteLine($"CPU: {hardwareData.CPUInformation}");
                         System.Diagnostics.Debug.WriteLine($"GPU: {hardwareData.GPUInformation}");
                         System.Diagnostics.Debug.WriteLine($"Connection: {hardwareData.ConnectionType}");
+
+                        Database.database.Close();
                     }
                 }
                 catch (Exception ex)
