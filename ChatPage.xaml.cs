@@ -339,7 +339,7 @@ namespace Marketplace_SE
             savePicker.SuggestedFileName = "ChatHistory";
 
             // Required for WinUI 3 desktop apps
-            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(App.MainWindow);
             WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hWnd);
 
             var file = await savePicker.PickSaveFileAsync();
