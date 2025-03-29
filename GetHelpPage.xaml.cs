@@ -33,7 +33,7 @@ namespace Marketplace_SE
         }
         private void OnButtonClickOpenCSConversation(object sender, RoutedEventArgs e)
         {
-            //ANDREI HERE
+            Frame.Navigate(typeof(UserFindCallPage));
         }
         private void OnButtonClickNavigateGetHelpPageMainMarketplacePage(object sender, RoutedEventArgs e)
         {
