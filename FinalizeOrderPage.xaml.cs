@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.Threading.Tasks;
+using Marketplace_SE.Data;
 using Marketplace_SE.HardwareSurvey;
 using Marketplace_SE.Rating;
 
@@ -32,10 +33,35 @@ namespace Marketplace_SE
         {
             this.InitializeComponent();
 
+            // Initialize database connection if not already initialized
+            if (Database.database == null)
+            {
+                try
+                {
+                    // Create database connection 
+                    Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=Robert\SQLEXPRESS;user id=sa;password=Sawanari12!");
+                    bool connected = Database.database.Connect();
+
+                    if (connected)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Database connected successfully");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Failed to connect to database");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Database connection error: {ex.Message}");
+                }
+            }
+
+
             // Create placeholder services (will be replaced with real implementations)
-            var ratingService = new PlaceholderRatingService();
-            var hardwareSurveyService = new PlaceholderHardwareSurveyService();
-            var loggerService = new PlaceholderLoggerService();
+            var ratingService = new DatabaseRatingService();
+            var hardwareSurveyService = new DatabaseHardwareSurveyService();
+            var loggerService = new DatabaseLoggerService();
 
             // Initialize components
             _rateAppComponent = new RateAppComponent(ratingService);
@@ -100,35 +126,121 @@ namespace Marketplace_SE
             }
         }
 
-        // Placeholder services (will be replaced with actual implementations)
-        private class PlaceholderRatingService : IRatingDatabaseService
+        // Database-connected services for ratings and hardware survey
+        private class DatabaseRatingService : IRatingDatabaseService
         {
-            public Task SaveRatingAsync(RatingData ratingData)
+            public async Task SaveRatingAsync(RatingData ratingData)
             {
-                //// System.Diagnostics.Debug.WriteLine($"Rating saved: {ratingData.Rating}, Comment: {ratingData.Comment}");
-                return Task.CompletedTask;
+                try
+                {
+                    if (Database.database != null)
+                    {
+                        // Prepare the SQL query
+                        string query = @"
+                            INSERT INTO Ratings (UserID, Rating, Comment, Timestamp, AppVersion)
+                            VALUES (@UserID, @Rating, @Comment, @Timestamp, @AppVersion)";
+
+                        // Prepare parameters
+                        string[] args = new string[] { "@UserID", "@Rating", "@Comment", "@Timestamp", "@AppVersion" };
+                        object[] values = new object[] {
+                            ratingData.UserID,
+                            ratingData.Rating,
+                            ratingData.Comment ?? (object)DBNull.Value,
+                            ratingData.Timestamp,
+                            ratingData.AppVersion
+                        };
+
+                        // Execute the query
+                        int result = Database.database.Execute(query, args, values);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log error but continue
+                    System.Diagnostics.Debug.WriteLine($"Error saving rating to database: {ex.Message}");
+                }
             }
         }
 
-        private class PlaceholderHardwareSurveyService : IHardwareSurveyDatabaseService
+        private class DatabaseHardwareSurveyService : IHardwareSurveyDatabaseService
         {
-            public Task SaveHardwareDataAsync(HardwareData hardwareData)
+            public async Task SaveHardwareDataAsync(HardwareData hardwareData)
             {
-                //// System.Diagnostics.Debug.WriteLine("Hardware survey data saved");
-                return Task.CompletedTask;
+                try
+                {
+                    if (Database.database != null)
+                    {
+                        // Prepare the SQL query
+                        string query = @"
+                            INSERT INTO HardwareSurvey (
+                                DeviceID, DeviceType, OperatingSystem, OSVersion, 
+                                BrowserName, BrowserVersion, ScreenResolution, 
+                                AvailableRAM, CPUInformation, GPUInformation, 
+                                ConnectionType, Timestamp, AppVersion
+                            )
+                            VALUES (
+                                @DeviceID, @DeviceType, @OperatingSystem, @OSVersion,
+                                @BrowserName, @BrowserVersion, @ScreenResolution,
+                                @AvailableRAM, @CPUInformation, @GPUInformation,
+                                @ConnectionType, @Timestamp, @AppVersion
+                            )";
+
+                        // Prepare parameters
+                        string[] args = new string[] {
+                            "@DeviceID", "@DeviceType", "@OperatingSystem", "@OSVersion",
+                            "@BrowserName", "@BrowserVersion", "@ScreenResolution",
+                            "@AvailableRAM", "@CPUInformation", "@GPUInformation",
+                            "@ConnectionType", "@Timestamp", "@AppVersion"
+                        };
+
+                        object[] values = new object[] {
+                            hardwareData.DeviceID,
+                            hardwareData.DeviceType,
+                            hardwareData.OperatingSystem,
+                            hardwareData.OSVersion,
+                            hardwareData.BrowserName ?? (object)DBNull.Value,
+                            hardwareData.BrowserVersion ?? (object)DBNull.Value,
+                            hardwareData.ScreenResolution,
+                            hardwareData.AvailableRAM,
+                            hardwareData.CPUInformation ?? (object)DBNull.Value,
+                            hardwareData.GPUInformation ?? (object)DBNull.Value,
+                            hardwareData.ConnectionType,
+                            hardwareData.Timestamp,
+                            hardwareData.AppVersion
+                        };
+
+                        // Execute the query
+                        int result = Database.database.Execute(query, args, values);
+
+                        // Print data to console for demonstration
+                        System.Diagnostics.Debug.WriteLine("========== HARDWARE SURVEY DATA SAVED TO DATABASE ==========");
+                        System.Diagnostics.Debug.WriteLine($"Device Type: {hardwareData.DeviceType}");
+                        System.Diagnostics.Debug.WriteLine($"OS: {hardwareData.OperatingSystem} {hardwareData.OSVersion}");
+                        System.Diagnostics.Debug.WriteLine($"Screen: {hardwareData.ScreenResolution}");
+                        System.Diagnostics.Debug.WriteLine($"RAM: {hardwareData.AvailableRAM}");
+                        System.Diagnostics.Debug.WriteLine($"CPU: {hardwareData.CPUInformation}");
+                        System.Diagnostics.Debug.WriteLine($"GPU: {hardwareData.GPUInformation}");
+                        System.Diagnostics.Debug.WriteLine($"Connection: {hardwareData.ConnectionType}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log error but continue
+                    System.Diagnostics.Debug.WriteLine($"Error saving hardware survey to database: {ex.Message}");
+                }
             }
         }
 
-        private class PlaceholderLoggerService : ILoggerService
+        private class DatabaseLoggerService : ILoggerService
         {
             public void LogInfo(string message)
             {
-                //// System.Diagnostics.Debug.WriteLine($"INFO: {message}");
+                System.Diagnostics.Debug.WriteLine($"INFO: {message}");
             }
 
             public void LogError(string message)
             {
-                //// System.Diagnostics.Debug.WriteLine($"ERROR: {message}");
+                System.Diagnostics.Debug.WriteLine($"ERROR: {message}");
             }
         }
     }
