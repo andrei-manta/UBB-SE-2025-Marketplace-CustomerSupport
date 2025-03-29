@@ -37,7 +37,7 @@ namespace Marketplace_SE
             this.me = new User("test", "");
             this.me.SetId(0);
 
-            Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-U503EH8\SQLEXPRESS;user id=sa;password=12345678");
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
             bool status = Database.database.Connect();
 
             if (!status)
@@ -86,7 +86,7 @@ namespace Marketplace_SE
 
 
 
-        private void createUIOrder(UserNotSoldOrder order)
+        public void createUIOrder(UserNotSoldOrder order)
         {
             
              Border itemBorder = new Border
@@ -166,15 +166,15 @@ namespace Marketplace_SE
 
 
 
-        private void OnButtonClickBuyItem(object sender, RoutedEventArgs e)
+        public void OnButtonClickBuyItem(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(FinalizeOrderPage));
         }
-        private void OnButtonClickOpenAccount(object sender, RoutedEventArgs e)
+        public void OnButtonClickOpenAccount(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(AccountPage));
         }
-        private void OnButtonClickChatWithSeller(object sender, RoutedEventArgs e)
+        public void OnButtonClickChatWithSeller(object sender, RoutedEventArgs e)
         {
             //IONUT AND CALIN HERE
             if (selected_item.sellerId == 1)
@@ -186,7 +186,7 @@ namespace Marketplace_SE
             //Frame.Navigate(typeof(ChatPage));
         }
 
-        private void OnButtonClickOpenHelp(object sender, RoutedEventArgs e)
+        public void OnButtonClickOpenHelp(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(GetHelpPage));
         }

@@ -40,7 +40,7 @@ namespace Marketplace_SE
             this.me = new User("test", "");
             this.me.SetId(0);
 
-            Database.database = new Database(@"database=ISS;Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-U503EH8\SQLEXPRESS;user id=sa;password=12345678");
+            Database.database = new Database(@"Integrated Security=True;TrustServerCertificate=True;data source=DESKTOP-45FVE4D\SQLEXPRESS;initial catalog=Marketplace_SE_UserGetHelp;trusted_connection=true");
             bool status = Database.database.Connect();
 
             if (!status)
