@@ -17,6 +17,9 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="UserFindCallPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="ReturnItemPage.xaml">
       <SubType>Designer</SubType>
     </Page>
