@@ -54,6 +54,8 @@ namespace Marketplace_SE
             if ((Moneyback_CheckBox.IsChecked == true || Anotherproduct_CheckBox.IsChecked == true) && Description_TextBox.Text != string.Empty)
             {
                 Display_TextBlock.Text = "Request sent succsessfully!";
+
+                //Add database connection and sql execution here
             }
             else
             {

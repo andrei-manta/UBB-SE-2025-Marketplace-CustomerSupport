@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="#f4f4f4" Padding="10">
+    <Grid Background="Gray" Padding="10">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,7 +22,7 @@
                Foreground="#2C3E50" Margin="0,0,0,10" />
 
         <!-- Chat area -->
-        <ScrollViewer Grid.Row="1" Background="White" BorderBrush="#ccc" BorderThickness="1" CornerRadius="6" Padding="10">
+        <ScrollViewer Grid.Row="1" Background="DarkGray" BorderBrush="#ccc" BorderThickness="1" CornerRadius="6" Padding="10">
             <StackPanel x:Name="ChatPanel" />
         </ScrollViewer>
 

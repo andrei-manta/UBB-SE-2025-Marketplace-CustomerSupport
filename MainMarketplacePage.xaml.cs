@@ -95,7 +95,7 @@ namespace Marketplace_SE
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(6),
                 Padding = new Thickness(15),
-                Background = new SolidColorBrush(Color.FromArgb(255,255,255,255))
+                Background = new SolidColorBrush(Color.FromArgb(255,0,0,0))
             };
 
             
